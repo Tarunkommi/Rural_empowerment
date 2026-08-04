@@ -37,8 +37,7 @@ if (!env.jwt.secret || !env.jwt.refreshSecret) {
 }
 
 if (!env.cloudinary.cloudName || !env.cloudinary.apiKey || !env.cloudinary.apiSecret) {
-  console.error('FATAL ERROR: Cloudinary credentials are not defined.');
-  process.exit(1);
+  console.warn('WARNING: Cloudinary credentials are not defined. Image uploads may fail.');
 }
 
 module.exports = env;
