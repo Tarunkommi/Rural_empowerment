@@ -18,7 +18,7 @@ const sendTokenResponse = (user, statusCode, res, message) => {
     ),
     httpOnly: true, // Cannot be accessed by client-side scripts
     secure: env.nodeEnv === 'production', // Cookie sent over HTTPS only in prod
-    sameSite: 'strict',
+    sameSite: env.nodeEnv === 'production' ? 'none' : 'strict',
   };
 
   res
