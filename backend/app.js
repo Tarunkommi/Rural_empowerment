@@ -28,7 +28,11 @@ const limiter = rateLimit({
 app.use('/api', limiter); // Apply rate limiting to /api routes
 
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: [
+    process.env.CORS_ORIGIN,
+    'http://localhost:5173',
+    'https://digital-india-frontend.onrender.com'
+  ].filter(Boolean),
   credentials: true,
 }));
 
