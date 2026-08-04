@@ -1,8 +1,14 @@
 import axios from 'axios';
 
+let apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+// Ensure the URL always ends with /api/v1
+if (apiBaseUrl && !apiBaseUrl.endsWith('/api/v1')) {
+  apiBaseUrl = apiBaseUrl.endsWith('/') ? `${apiBaseUrl}api/v1` : `${apiBaseUrl}/api/v1`;
+}
+
 // Create a configured axios instance
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1',
+  baseURL: apiBaseUrl,
   withCredentials: true, // For HTTP-only cookies (refresh token)
   headers: {
     'Content-Type': 'application/json',
