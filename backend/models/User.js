@@ -43,6 +43,36 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: 'default-avatar.png',
     },
+    gender: {
+      type: String,
+      enum: ['Male', 'Female', 'Other', 'Prefer not to say'],
+    },
+    dateOfBirth: {
+      type: Date,
+    },
+    address: {
+      type: String,
+      maxlength: [200, 'Address cannot exceed 200 characters'],
+    },
+    state: {
+      type: String,
+    },
+    district: {
+      type: String,
+    },
+    village: {
+      type: String,
+    },
+    pincode: {
+      type: String,
+      match: [/^[1-9][0-9]{5}$/, 'Please provide a valid 6-digit Indian PIN code'],
+    },
+    occupation: {
+      type: String,
+    },
+    educationLevel: {
+      type: String,
+    },
     isEmailVerified: {
       type: Boolean,
       default: false,

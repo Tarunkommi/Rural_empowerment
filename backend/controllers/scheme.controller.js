@@ -67,10 +67,31 @@ exports.getAllSchemes = async (req, res, next) => {
  */
 exports.getSchemeById = async (req, res, next) => {
   try {
-    const scheme = await Scheme.findById(req.params.id);
+    const scheme = await Scheme.findById(req.params.id).populate('relatedSchemes', 'title slug image');
 
     if (!scheme) {
       return next(new ApiError(404, `Scheme not found with id of ${req.params.id}`));
+    }
+
+    res.status(200).json(
+      new ApiResponse(200, scheme, 'Scheme retrieved successfully')
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Get single scheme by Slug
+ * @route   GET /api/v1/schemes/slug/:slug
+ * @access  Public
+ */
+exports.getSchemeBySlug = async (req, res, next) => {
+  try {
+    const scheme = await Scheme.findOne({ slug: req.params.slug }).populate('relatedSchemes', 'title slug image shortDescription');
+
+    if (!scheme) {
+      return next(new ApiError(404, `Scheme not found with slug of ${req.params.slug}`));
     }
 
     res.status(200).json(

@@ -5,6 +5,10 @@ const {
   updateProfile,
   changePassword,
   uploadProfileImage,
+  getTrainings,
+  getBookmarks,
+  getActivity,
+  deleteAccount,
 } = require('../controllers/user.controller');
 
 const { protect } = require('../middlewares/auth.middleware');
@@ -27,5 +31,10 @@ router.put('/profile/password', changePasswordValidation, validate, changePasswo
 
 // Apply multer middleware just to the specific image upload endpoint
 router.put('/profile/image', upload.single('image'), uploadProfileImage);
+
+router.get('/trainings', getTrainings);
+router.get('/bookmarks', getBookmarks);
+router.get('/activity', getActivity);
+router.delete('/account', deleteAccount);
 
 module.exports = router;

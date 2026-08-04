@@ -9,6 +9,8 @@ import Home from '../pages/Home';
 import DigitalLiteracy from '../pages/DigitalLiteracy';
 import InternetAccess from '../pages/InternetAccess';
 import Schemes from '../pages/Schemes';
+import GovernmentSchemes from '../pages/GovernmentSchemes';
+import SchemeDetails from '../pages/SchemeDetails';
 import Training from '../pages/Training';
 import Blogs from '../pages/Blogs';
 import Contact from '../pages/Contact';
@@ -16,6 +18,8 @@ import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
+import Profile from '../pages/Profile';
+import ProtectedRoute from '../components/auth/ProtectedRoute';
 
 export default function AppRoutes() {
   return (
@@ -32,9 +36,21 @@ export default function AppRoutes() {
           <Route path="/digital-literacy" element={<DigitalLiteracy />} />
           <Route path="/internet-access" element={<InternetAccess />} />
           <Route path="/schemes" element={<Schemes />} />
+          <Route path="/government-schemes" element={<GovernmentSchemes />} />
+          <Route path="/government-schemes/:slug" element={<SchemeDetails />} />
           <Route path="/training" element={<Training />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/contact" element={<Contact />} />
+          
+          {/* Protected Routes */}
+          <Route 
+            path="/profile" 
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            } 
+          />
           <Route path="*" element={
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center min-h-[60vh] flex flex-col justify-center">
               <h1 className="text-4xl font-extrabold text-primary mb-4">404 - Page Not Found</h1>

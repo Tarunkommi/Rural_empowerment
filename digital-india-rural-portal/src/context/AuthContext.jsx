@@ -9,31 +9,31 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const initAuth = async () => {
-      const storedToken = localStorage.getItem('token');
-      
-      if (storedToken) {
-        try {
-          // Verify token by fetching user profile
-          const response = await authService.getCurrentUser();
-          
-          if (response.success) {
-            setUser(response.data);
-            setToken(storedToken);
-            setIsAuthenticated(true);
-            // Sync local storage with fresh DB data
-            localStorage.setItem('user', JSON.stringify(response.data));
-          }
-        } catch (error) {
-          // Error is handled globally by axiosConfig interceptor (401 clears storage)
-          console.error("Authentication failed during startup:", error.message);
+  const checkAuthentication = async () => {
+    const storedToken = localStorage.getItem('token');
+    
+    if (storedToken) {
+      try {
+        // Verify token by fetching user profile
+        const response = await authService.getCurrentUser();
+        
+        if (response.success) {
+          setUser(response.data.user);
+          setToken(storedToken);
+          setIsAuthenticated(true);
+          // Sync local storage with fresh DB data
+          localStorage.setItem('user', JSON.stringify(response.data.user));
         }
+      } catch (error) {
+        // Error is handled globally by axiosConfig interceptor (401 clears storage)
+        console.error("Authentication failed during startup:", error.message);
       }
-      setLoading(false);
-    };
+    }
+    setLoading(false);
+  };
 
-    initAuth();
+  useEffect(() => {
+    checkAuthentication();
   }, []);
 
   const loginContext = (userData, authToken) => {
@@ -56,6 +56,23 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
   };
 
+  const updateUserContext = (updatedUserData) => {
+    const newUser = { ...user, ...updatedUserData };
+    setUser(newUser);
+    localStorage.setItem('user', JSON.stringify(newUser));
+  };
+
+  const refreshProfile = async () => {
+    try {
+      const response = await authService.getCurrentUser();
+      if (response.success) {
+        updateUserContext(response.data.user);
+      }
+    } catch (error) {
+      console.error("Failed to refresh profile:", error);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -63,8 +80,14 @@ export const AuthProvider = ({ children }) => {
         token,
         isAuthenticated,
         loading,
+        login: loginContext,
+        logout: logoutContext,
+        updateProfile: updateUserContext,
+        refreshProfile,
+        checkAuthentication,
         loginContext,
         logoutContext,
+        updateUserContext,
       }}
     >
       {children}

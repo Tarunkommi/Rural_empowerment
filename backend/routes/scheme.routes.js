@@ -4,6 +4,7 @@ const {
   createScheme,
   getAllSchemes,
   getSchemeById,
+  getSchemeBySlug,
   updateScheme,
   deleteScheme
 } = require('../controllers/scheme.controller');
@@ -16,6 +17,9 @@ const { USER_ROLES } = require('../utils/constants');
 // Public routes
 router.route('/')
   .get(getAllSchemes);
+
+router.route('/slug/:slug')
+  .get(getSchemeBySlug);
 
 router.route('/:id')
   .get(getSchemeById);

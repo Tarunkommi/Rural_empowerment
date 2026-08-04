@@ -22,7 +22,7 @@ export default function LoginForm() {
       
       if (response.success) {
         toast.success(response.message || 'Login Successful!');
-        loginContext(response.user, response.token);
+        loginContext(response.data.user, response.data.accessToken);
         
         // Wait a tiny bit for the toast to show and context to settle before redirecting
         setTimeout(() => {
